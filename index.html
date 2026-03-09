@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quero Ser Como...</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Quero Ser Como...</h1>
+        <p>Escolha um país para descobrir quando o Brasil alcançará o seu atual nível de Desenvolvimento Humano (IDH).</p>
+
+        <div class="form-group">
+            <label for="country-select"><strong>Quero que o Brasil seja como:</strong></label>
+            <select id="country-select">
+                <option value="">Carregando lista de países...</option>
+            </select>
+        </div>
+
+        <button id="btn-calcular" disabled>Calcular Previsão</button>
+
+        <div id="resultado" class="hidden"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
