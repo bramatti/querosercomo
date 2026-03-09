@@ -66,7 +66,11 @@ async function carregarDados() {
             for (let j = 1; j < cabecalhosProjecao.length; j++) {
                 const ano = cabecalhosProjecao[j];
                 const idhProjetado = parseFloat(linhaBrasil[j].replace(',', '.'));
-                dadosProjecaoBrasil[ano] = idhProjetado;
+                
+                // Evita pegar colunas vazias acidentais do CSV
+                if(ano && !isNaN(idhProjetado)) {
+                    dadosProjecaoBrasil[ano] = idhProjetado;
+                }
             }
             btnCalcular.disabled = false; // Libera o botão!
         } else {
@@ -103,6 +107,7 @@ btnCalcular.addEventListener('click', () => {
 
     // Vasculha as projeções ano a ano até o IDH do Brasil passar o IDH alvo
     const anosProjetados = Object.keys(dadosProjecaoBrasil).sort();
+    const ultimoAnoProjetado = anosProjetados[anosProjetados.length - 1]; // Descobre sozinho que é 2100
     
     for (const ano of anosProjetados) {
         if (dadosProjecaoBrasil[ano] >= idhAlvo) {
@@ -113,7 +118,7 @@ btnCalcular.addEventListener('click', () => {
 
     // Calcula os anos e exibe o resultado
     if (anoAlcancado) {
-        const anoAtual = new Date().getFullYear(); // Ex: 2026
+        const anoAtual = new Date().getFullYear(); // Ex: 2024 (ou 2026 dependendo de quando o usuário acessar)
         anosNecessarios = anoAlcancado - anoAtual;
         
         let textoTempo = anosNecessarios > 0 
@@ -126,10 +131,10 @@ btnCalcular.addEventListener('click', () => {
             ${textoTempo}
         `;
     } else {
-        // Caso 2: O Brasil não alcança o país nem em 2050
+        // Caso 2: O Brasil não alcança o país nem no último ano da planilha (agora 2100)
         divResultado.innerHTML = `
             O IDH de <strong>${paisAlvo}</strong> é <strong>${idhAlvo.toFixed(3)}</strong>.<br><br>
-            Infelizmente, de acordo com as projeções até 2050, o Brasil ainda não terá alcançado esse patamar de desenvolvimento.
+            Infelizmente, de acordo com as projeções até <strong>${ultimoAnoProjetado}</strong>, o Brasil ainda não terá alcançado esse patamar de desenvolvimento.
         `;
     }
 
